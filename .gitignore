@@ -97,7 +97,7 @@ celerybeat-schedule
 
 # Environments
 .venv
-env/
+#env/
 venv/
 ENV/
 env.bak/
@@ -208,8 +208,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+#.env
+#.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -231,3 +231,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+
