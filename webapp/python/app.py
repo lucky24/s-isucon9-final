@@ -122,19 +122,12 @@ def get_available_seats_from_train(c, train, from_station, to_station, seat_clas
         sql = """SELECT sr.reservation_id, sr.car_number, sr.seat_row, sr.seat_column
         FROM seat_reservations sr, reservations r, seat_master s, station_master std, station_master sta
         WHERE
-            r.reservation_id=sr.reservation_id AND
-            s.train_class=r.train_class AND
-            s.car_number=sr.car_number AND
-            s.seat_column=sr.seat_column AND
-            s.seat_row=sr.seat_row AND
-            std.name=r.departure AND
-            sta.name=r.arrival
         """
 
         if train["is_nobori"]:
-            sql += " AND ((sta.id < %s AND %s <= std.id) OR (sta.id < %s AND %s <= std.id) OR (%s < sta.id AND std.id < %s))"
+            sql += "(sta.id < %s AND %s <= std.id) OR (%s < sta.id AND std.id < %s))"
         else:
-            sql += " AND ((std.id <= %s AND %s < sta.id) OR (std.id <= %s AND %s < sta.id) OR (sta.id < %s AND %s < std.id))"
+            sql += "(std.id <= %s AND %s < sta.id) OR (sta.id < %s AND %s < std.id))"
 
         c.execute(sql, (from_station["id"], from_station["id"], to_station["id"], to_station["id"], from_station["id"], to_station["id"]))
         seat_reservation_list = c.fetchall()
