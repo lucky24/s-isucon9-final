@@ -279,7 +279,7 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
     distance = abs(to_station["distance"] - from_station["distance"])
     distFare = get_distance_fare(c, distance)
     fareList = fare_master.get(train_class, {}).get(seat_class, None)
-    print(f'************************************* {len(fareList)}')
+    app.logger.warn(f'************************************* {len(fareList)}')
     if not fareList:
         raise HttpException(requests.codes['internal_server_error'], "fare_master does not exists")
 
