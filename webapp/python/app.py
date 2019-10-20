@@ -164,7 +164,7 @@ distance_fare_list = [
 ]
 def get_distance_fare(c, distance):
     for i in range(len(distance_fare_list) - 1):
-        if distance_fare_list[i]['distance'] <= distance and distance < distance_fare_list[i + 1]['distance']:
+        if distance_fare_list[i]['distance'] <= distance < distance_fare_list[i + 1]['distance']:
             return distance_fare_list[i]['fare']
     return distance_fare_list[-1]['fare']
 
@@ -173,25 +173,45 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
     distance = abs(to_station["distance"] - from_station["distance"])
     distFare = get_distance_fare(c, distance)
 
-    app.logger.warn("distFare {}".format(distFare))
+    fare_multiplier = 1.25
 
-    sql = "SELECT * FROM fare_master WHERE train_class=%s AND seat_class=%s ORDER BY start_date"
-    c.execute(sql, (train_class, seat_class))
-    fareList = c.fetchall()
+    if datetime.date(2020, 1, 1) <= date < datetime.date(2020, 1, 6):
+        fare_multiplier *= 5
+    elif datetime.date(2020, 1, 6) <= date < datetime.date(2020, 3, 13):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 3, 13) <= date < datetime.date(2020, 4, 1):
+        fare_multiplier *= 3
+    elif datetime.date(2020, 4, 1) <= date < datetime.date(2020, 4, 24):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 4, 24) <= date < datetime.date(2020, 5, 11):
+        fare_multiplier *= 5
+    elif datetime.date(2020, 5, 11) <= date < datetime.date(2020, 8, 7):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 8, 7) <= date < datetime.date(2020, 8, 24):
+        fare_multiplier *= 3
+    elif datetime.date(2020, 8, 24) <= date < datetime.date(2020, 12, 25):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 12, 25) <= date:
+        fare_multiplier *= 5
+    print(fare_multiplier)
 
-    if len(fareList) == 0:
-        raise HttpException(requests.codes['internal_server_error'], "fare_master does not exists")
+    if train_class == '最速':
+        fare_multiplier *= 1.5
+    elif train_class == '中間':
+        fare_multiplier *= 1.0
+    elif train_class == '遅いやつ':
+        fare_multiplier *= 0.8
+    print(fare_multiplier)
 
-    selectedFare = fareList[0]
+    if seat_class == 'premium':
+        fare_multiplier *= 1.6
+    elif seat_class == 'reserved':
+        fare_multiplier *= 1.0
+    elif seat_class == 'non-reserved':
+        fare_multiplier *= 0.8
+    print(fare_multiplier)
 
-    for fare in fareList:
-        if fare["start_date"].date() <= date:
-            app.logger.warn("%s %s", fare["start_date"].date(), fare["fare_multiplier"])
-            selectedFare = fare
-
-    app.logger.warn("%%%%%%%%%%%%%%%%%%%")
-    return int(distFare * selectedFare["fare_multiplier"])
-
+    return int(distFare * fare_multiplier)
 
 def make_reservation_response(c, reservation):
     sql = "SELECT departure FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
