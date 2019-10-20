@@ -907,7 +907,8 @@ def post_reserve():
 
             # 席の予約情報登録
             # reservationsレコード1に対してseat_reservationstが1以上登録される
-            c.executemany('INSERT INTO seat_reservations (`reservation_id`, `car_number`, `seat_row`, `seat_column`) VALUES (%s, %s, %s, %s)', seats)
+            sql = "INSERT INTO `seat_reservations` (`reservation_id`, `car_number`, `seat_row`, `seat_column`) VALUES (%s, %s, %s, %s)"
+            c.executemany(sql, ((reservation_id, car_number, seat['row'], seat['column']) for seat in seats))
 
     except MySQLdb.Error as err:
         conn.rollback()
