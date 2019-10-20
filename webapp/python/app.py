@@ -125,9 +125,9 @@ def get_available_seats_from_train(c, train, from_station, to_station, seat_clas
         """
 
         if train["is_nobori"]:
-            sql += "(sta.id < %s AND %s <= std.id) OR (%s < sta.id AND std.id < %s))"
+            sql += " (sta.id < %s AND %s <= std.id) OR (%s < sta.id AND std.id < %s))"
         else:
-            sql += "(std.id <= %s AND %s < sta.id) OR (sta.id < %s AND %s < std.id))"
+            sql += " (std.id <= %s AND %s < sta.id) OR (sta.id < %s AND %s < std.id))"
 
         c.execute(sql, (from_station["id"], from_station["id"], to_station["id"], to_station["id"], from_station["id"], to_station["id"]))
         seat_reservation_list = c.fetchall()
