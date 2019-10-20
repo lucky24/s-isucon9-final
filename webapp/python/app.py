@@ -193,7 +193,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1
     elif datetime.date(2020, 12, 25) <= date:
         fare_multiplier *= 5
-    print(fare_multiplier)
 
     if train_class == '最速':
         fare_multiplier *= 1.5
@@ -201,7 +200,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif train_class == '遅いやつ':
         fare_multiplier *= 0.8
-    print(fare_multiplier)
 
     if seat_class == 'premium':
         fare_multiplier *= 1.6
@@ -209,7 +207,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif seat_class == 'non-reserved':
         fare_multiplier *= 0.8
-    print(fare_multiplier)
 
     return int(distFare * fare_multiplier)
 
