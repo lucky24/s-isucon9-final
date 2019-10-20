@@ -1,5 +1,13 @@
 use `isutrain`;
 
+DROP TABLE IF EXISTS `fare_master`;
+CREATE TABLE `fare_master` (
+  `train_class` varchar(100) NOT NULL,
+  `seat_class` enum('premium', 'reserved', 'non-reserved') NOT NULL,
+  `start_date` datetime NOT NULL,
+  `fare_multiplier` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
   `reservation_id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
