@@ -1,11 +1,5 @@
 use `isutrain`;
 
-DROP TABLE IF EXISTS `distance_fare_master`;
-CREATE TABLE `distance_fare_master` (
-  `distance` double NOT NULL,
-  `fare` int unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 DROP TABLE IF EXISTS `fare_master`;
 CREATE TABLE `fare_master` (
   `train_class` varchar(100) NOT NULL,
