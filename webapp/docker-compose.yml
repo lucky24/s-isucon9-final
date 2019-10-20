@@ -6,7 +6,9 @@ services:
     image: nginx:1.17
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/dist:/opt/isucon/public
+      - ./logs/nginx:/var/log/nginx
     ports:
       - "8080:80"
       - "5000:5000"
@@ -25,7 +27,7 @@ services:
       - mysql:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
       - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./logs:/var/log/mysql
+      - ./logs/mysql:/var/log/mysql
     # development only
     ports:
       - "13306:3306"
