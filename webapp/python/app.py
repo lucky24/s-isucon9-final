@@ -3,6 +3,7 @@ import sys
 import datetime
 import dateutil.parser
 import logging
+import subprocess
 
 import flask
 import pbkdf2
@@ -1231,6 +1232,8 @@ def get_settings():
 
 @app.route("/initialize", methods=["POST"])
 def post_initialize():
+
+    subprocess.call(["../sql/init.sh"])
 
     conn = dbh()
     with conn.cursor() as c:
