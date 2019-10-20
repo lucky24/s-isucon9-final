@@ -164,9 +164,10 @@ distance_fare_list = [
     {'distance': 1000, 'fare': 20000},
 ]
 def get_distance_fare(c, distance):
-    for distance_fare in distance_fare_list:
-        if distance_fare['distance'] <= distance:
-            return distance_fare['fare']
+    for i in range(len(distance_fare_list) - 1):
+        if distance_fare_list[i]['distance'] <= distance < distance_fare_list[i + 1]['distance']:
+            return distance_fare_list[i]['fare']
+    return distance_fare_list[-1]['fare']
 
 def calc_fare(c, date, from_station, to_station, train_class, seat_class):
     distance = abs(to_station["distance"] - from_station["distance"])
@@ -174,24 +175,25 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
 
     fare_multiplier = 1.25
 
-    if datetime.date(2020, 1, 1) <= date:
+    if datetime.date(2020, 1, 1) <= date < datetime.date(2020, 1, 6):
         fare_multiplier *= 5
-    elif datetime.date(2020, 1, 6) <= date:
+    elif datetime.date(2020, 1, 6) <= date < datetime.date(2020, 3, 13):
         fare_multiplier *= 1
-    elif datetime.date(2020, 3, 13) <= date:
+    elif datetime.date(2020, 3, 13) <= date < datetime.date(2020, 4, 1):
         fare_multiplier *= 3
-    elif datetime.date(2020, 4, 1) <= date:
+    elif datetime.date(2020, 4, 1) <= date < datetime.date(2020, 4, 24):
         fare_multiplier *= 1
-    elif datetime.date(2020, 4, 24) <= date:
+    elif datetime.date(2020, 4, 24) <= date < datetime.date(2020, 5, 11):
         fare_multiplier *= 5
-    elif datetime.date(2020, 5, 11) <= date:
+    elif datetime.date(2020, 5, 11) <= date < datetime.date(2020, 8, 7):
         fare_multiplier *= 1
-    elif datetime.date(2020, 8, 7) <= date:
+    elif datetime.date(2020, 8, 7) <= date < datetime.date(2020, 8, 24):
         fare_multiplier *= 3
-    elif datetime.date(2020, 8, 24) <= date:
+    elif datetime.date(2020, 8, 24) <= date < datetime.date(2020, 12, 25):
         fare_multiplier *= 1
     elif datetime.date(2020, 12, 25) <= date:
         fare_multiplier *= 5
+    print(fare_multiplier)
 
     if train_class == '最速':
         fare_multiplier *= 1.5
@@ -199,6 +201,7 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif train_class == '遅いやつ':
         fare_multiplier *= 0.8
+    print(fare_multiplier)
 
     if seat_class == 'premium':
         fare_multiplier *= 1.6
@@ -206,6 +209,7 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif seat_class == 'non-reserved':
         fare_multiplier *= 0.8
+    print(fare_multiplier)
 
     return int(distFare * fare_multiplier)
 
