@@ -164,7 +164,11 @@ distance_fare_list = [
 ]
 def get_distance_fare(c, distance):
     for i in range(len(distance_fare_list) - 1):
+<<<<<<< HEAD
+        if distance_fare_list[i]['distance'] <= distance < distance_fare_list[i + 1]['distance']:
+=======
         if distance_fare_list[i]['distance'] <= distance and distance < distance_fare_list[i + 1]['distance']:
+>>>>>>> master
             return distance_fare_list[i]['fare']
     return distance_fare_list[-1]['fare']
 
@@ -172,6 +176,48 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
 
     distance = abs(to_station["distance"] - from_station["distance"])
     distFare = get_distance_fare(c, distance)
+<<<<<<< HEAD
+
+    fare_multiplier = 1.25
+
+    if datetime.date(2020, 1, 1) <= date < datetime.date(2020, 1, 6):
+        fare_multiplier *= 5
+    elif datetime.date(2020, 1, 6) <= date < datetime.date(2020, 3, 13):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 3, 13) <= date < datetime.date(2020, 4, 1):
+        fare_multiplier *= 3
+    elif datetime.date(2020, 4, 1) <= date < datetime.date(2020, 4, 24):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 4, 24) <= date < datetime.date(2020, 5, 11):
+        fare_multiplier *= 5
+    elif datetime.date(2020, 5, 11) <= date < datetime.date(2020, 8, 7):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 8, 7) <= date < datetime.date(2020, 8, 24):
+        fare_multiplier *= 3
+    elif datetime.date(2020, 8, 24) <= date < datetime.date(2020, 12, 25):
+        fare_multiplier *= 1
+    elif datetime.date(2020, 12, 25) <= date:
+        fare_multiplier *= 5
+    print(fare_multiplier)
+
+    if train_class == '最速':
+        fare_multiplier *= 1.5
+    elif train_class == '中間':
+        fare_multiplier *= 1.0
+    elif train_class == '遅いやつ':
+        fare_multiplier *= 0.8
+    print(fare_multiplier)
+
+    if seat_class == 'premium':
+        fare_multiplier *= 1.6
+    elif seat_class == 'reserved':
+        fare_multiplier *= 1.0
+    elif seat_class == 'non-reserved':
+        fare_multiplier *= 0.8
+    print(fare_multiplier)
+
+    return int(distFare * fare_multiplier)
+=======
 
     app.logger.warn("distFare {}".format(distFare))
 
@@ -192,6 +238,7 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
     app.logger.warn("%%%%%%%%%%%%%%%%%%%")
     return int(distFare * selectedFare["fare_multiplier"])
 
+>>>>>>> master
 
 def make_reservation_response(c, reservation):
     sql = "SELECT departure FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
@@ -1140,6 +1187,11 @@ def get_settings():
 @app.route("/initialize", methods=["POST"])
 def post_initialize():
 
+<<<<<<< HEAD
+    # subprocess.call(["/bin/bash", "../sql/init.sh"])
+
+=======
+>>>>>>> master
     conn = dbh()
     with conn.cursor() as c:
         c.execute("TRUNCATE seat_reservations")

@@ -6,6 +6,7 @@ services:
     build: ./python
     volumes:
       - ./python:/opt/webapp
+      - ./sql:/opt/sql
     env_file:
       - ".env"
     environment:
