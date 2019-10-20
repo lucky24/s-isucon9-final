@@ -33,7 +33,7 @@ CREATE TABLE `seat_master` (
   `seat_class` enum('premium', 'reserved', 'non-reserved') NOT NULL,
   `is_smoking_seat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-ALTER TABLE seat_master ADD INDEX index_train_master01(train_class, seat_class, is_smoking_seat);
+ALTER TABLE seat_master ADD INDEX index_train_master01(`train_class`, `seat_class`, `is_smoking_seat`);
 
 DROP TABLE IF EXISTS `seat_reservations`;
 CREATE TABLE `seat_reservations` (
@@ -63,7 +63,7 @@ CREATE TABLE `train_master` (
   `last_station` varchar(100) NOT NULL,
   `is_nobori` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-ALTER TABLE train_master ADD INDEX index_train_master01(date, train_class, train_name);
+ALTER TABLE train_master ADD INDEX index_train_master01(`date`, `train_class`);
 
 
 DROP TABLE IF EXISTS `train_timetable_master`;
