@@ -163,35 +163,127 @@ distance_fare_list = [
     {'distance': 1000, 'fare': 20000},
 ]
 def get_distance_fare(c, distance):
-    for i in range(len(distance_fare_list) - 1):
-        if distance_fare_list[i]['distance'] <= distance and distance < distance_fare_list[i + 1]['distance']:
-            return distance_fare_list[i]['fare']
-    return distance_fare_list[-1]['fare']
+    for distance_fare in distance_fare_list
+        if distance_fare['distance'] <= distance:
+            return distance_fare['fare']
 
+fare_master = {
+    '最速': {
+        'premium': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 15},
+            {'start_date': '2020-01-06', 'fare_multiplier': 3},
+            {'start_date': '2020-03-13', 'fare_multiplier': 9},
+            {'start_date': '2020-04-01', 'fare_multiplier': 3},
+            {'start_date': '2020-04-24', 'fare_multiplier': 15},
+            {'start_date': '2020-05-11', 'fare_multiplier': 3},
+            {'start_date': '2020-08-07', 'fare_multiplier': 9},
+            {'start_date': '2020-08-24', 'fare_multiplier': 3},
+            {'start_date': '2020-12-25', 'fare_multiplier': 15},
+        ],
+        'reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 9.375},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1.875},
+            {'start_date': '2020-03-13', 'fare_multiplier': 5.625},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1.875},
+            {'start_date': '2020-04-24', 'fare_multiplier': 9.375},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1.875},
+            {'start_date': '2020-08-07', 'fare_multiplier': 5.625},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1.875},
+            {'start_date': '2020-12-25', 'fare_multiplier': 9.375},
+        ],
+        'non-reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 7.5},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1.5},
+            {'start_date': '2020-03-13', 'fare_multiplier': 4.5},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1.5},
+            {'start_date': '2020-04-24', 'fare_multiplier': 7.5},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1.5},
+            {'start_date': '2020-08-07', 'fare_multiplier': 4.5},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1.5},
+            {'start_date': '2020-12-25', 'fare_multiplier': 7.5},
+        ],
+    },
+    '中間': {
+        'premium': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 10},
+            {'start_date': '2020-01-06', 'fare_multiplier': 2},
+            {'start_date': '2020-03-13', 'fare_multiplier': 6},
+            {'start_date': '2020-04-01', 'fare_multiplier': 2},
+            {'start_date': '2020-04-24', 'fare_multiplier': 10},
+            {'start_date': '2020-05-11', 'fare_multiplier': 2},
+            {'start_date': '2020-08-07', 'fare_multiplier': 6},
+            {'start_date': '2020-08-24', 'fare_multiplier': 2},
+            {'start_date': '2020-12-25', 'fare_multiplier': 10},
+        ],
+        'reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 6.25},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1.25},
+            {'start_date': '2020-03-13', 'fare_multiplier': 3.75},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1.25},
+            {'start_date': '2020-04-24', 'fare_multiplier': 6.25},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1.25},
+            {'start_date': '2020-08-07', 'fare_multiplier': 3.75},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1.25},
+            {'start_date': '2020-12-25', 'fare_multiplier': 6.25},
+        ],
+        'non-reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 5},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1},
+            {'start_date': '2020-03-13', 'fare_multiplier': 3},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1},
+            {'start_date': '2020-04-24', 'fare_multiplier': 5},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1},
+            {'start_date': '2020-08-07', 'fare_multiplier': 3},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1},
+            {'start_date': '2020-12-25', 'fare_multiplier': 5},
+        ],
+    },
+    '遅いやつ': {
+        'premium': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 8},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1.6},
+            {'start_date': '2020-03-13', 'fare_multiplier': 4.8},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1.6},
+            {'start_date': '2020-04-24', 'fare_multiplier': 8},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1.6},
+            {'start_date': '2020-08-07', 'fare_multiplier': 4.8},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1.6},
+            {'start_date': '2020-12-25', 'fare_multiplier': 8},
+        ],
+        'reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 5},
+            {'start_date': '2020-01-06', 'fare_multiplier': 1},
+            {'start_date': '2020-03-13', 'fare_multiplier': 3},
+            {'start_date': '2020-04-01', 'fare_multiplier': 1},
+            {'start_date': '2020-04-24', 'fare_multiplier': 5},
+            {'start_date': '2020-05-11', 'fare_multiplier': 1},
+            {'start_date': '2020-08-07', 'fare_multiplier': 3},
+            {'start_date': '2020-08-24', 'fare_multiplier': 1},
+            {'start_date': '2020-12-25', 'fare_multiplier': 5},
+        ],
+        'non-reserved': [
+            {'start_date': '2020-01-01', 'fare_multiplier': 4},
+            {'start_date': '2020-01-06', 'fare_multiplier': 0.8},
+            {'start_date': '2020-03-13', 'fare_multiplier': 2.4},
+            {'start_date': '2020-04-01', 'fare_multiplier': 0.8},
+            {'start_date': '2020-04-24', 'fare_multiplier': 4},
+            {'start_date': '2020-05-11', 'fare_multiplier': 0.8},
+            {'start_date': '2020-08-07', 'fare_multiplier': 2.4},
+            {'start_date': '2020-08-24', 'fare_multiplier': 0.8},
+            {'start_date': '2020-12-25', 'fare_multiplier': 4},
+        ],
+    },
+}
 def calc_fare(c, date, from_station, to_station, train_class, seat_class):
-
     distance = abs(to_station["distance"] - from_station["distance"])
     distFare = get_distance_fare(c, distance)
-
-    app.logger.warn("distFare {}".format(distFare))
-
-    sql = "SELECT * FROM fare_master WHERE train_class=%s AND seat_class=%s ORDER BY start_date"
-    c.execute(sql, (train_class, seat_class))
-    fareList = c.fetchall()
-
-    if len(fareList) == 0:
+    fareList = fare_master.get(train_class, {}).get(seat_class, None)
+    if not fareList:
         raise HttpException(requests.codes['internal_server_error'], "fare_master does not exists")
 
-    selectedFare = fareList[0]
-
     for fare in fareList:
-        if fare["start_date"].date() <= date:
-            app.logger.warn("%s %s", fare["start_date"].date(), fare["fare_multiplier"])
-            selectedFare = fare
-
-    app.logger.warn("%%%%%%%%%%%%%%%%%%%")
-    return int(distFare * selectedFare["fare_multiplier"])
-
+        if datetime.datetime.strptime(fare["start_date"], '%Y-%m-%d').date() <= date:
+            return int(distFare * fare["fare_multiplier"])
 
 def make_reservation_response(c, reservation):
     sql = "SELECT departure FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
