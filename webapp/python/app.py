@@ -1233,7 +1233,7 @@ def get_settings():
 @app.route("/initialize", methods=["POST"])
 def post_initialize():
 
-    subprocess.call(["/bin/bash ../sql/init.sh"])
+    subprocess.call(["/bin/bash", "../sql/init.sh"])
 
     conn = dbh()
     with conn.cursor() as c:
