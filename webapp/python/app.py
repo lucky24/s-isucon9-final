@@ -193,7 +193,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1
     elif datetime.date(2020, 12, 25) <= date:
         fare_multiplier *= 5
-    print(fare_multiplier)
 
     if train_class == '最速':
         fare_multiplier *= 1.5
@@ -201,7 +200,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif train_class == '遅いやつ':
         fare_multiplier *= 0.8
-    print(fare_multiplier)
 
     if seat_class == 'premium':
         fare_multiplier *= 1.6
@@ -209,7 +207,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
         fare_multiplier *= 1.0
     elif seat_class == 'non-reserved':
         fare_multiplier *= 0.8
-    print(fare_multiplier)
 
     return int(distFare * fare_multiplier)
 
@@ -341,11 +338,11 @@ def get_train_search():
             station_list = c.fetchall()
 
             if not train_class:
-                sql = "SELECT * FROM train_master WHERE date=%s AND is_nobori=%s"
-                c.execute(sql, (str(use_at.date()), is_nobori))
+                sql = "select   t.train_class as train_class, t.train_name as train_name,  t.start_station as start_station, t.last_station as last_station,  dtt.departure as departure, att.arrival as arrival,  t.is_nobori as is_nobori  from train_master as t  join train_timetable_master as dtt on dtt.date=t.date AND dtt.train_class=t.train_class AND dtt.train_name=t.train_name AND dtt.station=%s  join train_timetable_master as att on att.date=t.date AND att.train_class=t.train_class AND att.train_name=t.train_name AND att.station=%s  where t.date=%s AND t.is_nobori=%s"
+                c.execute(sql, (from_name, to_name, str(use_at.date()), is_nobori))
             else:
-                sql = "SELECT * FROM train_master WHERE date=%s AND is_nobori=%s AND train_class=%s"
-                c.execute(sql, (str(use_at.date()), is_nobori, train_class))
+                sql = "select   t.train_class as train_class, t.train_name as train_name,  t.start_station as start_station, t.last_station as last_station,  dtt.departure as departure, att.arrival as arrival,  t.is_nobori as is_nobori  from train_master as t  join train_timetable_master as dtt on dtt.date=t.date AND dtt.train_class=t.train_class AND dtt.train_name=t.train_name AND dtt.station=%s  join train_timetable_master as att on att.date=t.date AND att.train_class=t.train_class AND att.train_name=t.train_name AND att.station=%s  where t.date=%s AND t.is_nobori=%s AND t.train_class=%s"
+                c.execute(sql, (from_name, to_name, str(use_at.date()), is_nobori, train_class))
 
             train_search_response_list = []
 
@@ -393,19 +390,10 @@ def get_train_search():
 
                 if isContainsOriginStation and isContainsDestStation:
                     # 列車情報
+                    train['departure'] = datetime.datetime(use_at.year, use_at.month, use_at.day, 0, 0, 0).replace(tzinfo=JST)+ train["departure"]
+                    train['arrival'] = datetime.datetime(use_at.year, use_at.month, use_at.day, 0, 0, 0).replace(tzinfo=JST)+ train["arrival"]
 
-                    sql = "SELECT departure FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
-                    c.execute(sql, (str(use_at.date()), train["train_class"], train["train_name"], from_station["name"]))
-                    departure = c.fetchone()
-                    departure = datetime.datetime(use_at.year, use_at.month, use_at.day, 0, 0, 0).replace(tzinfo=JST) + departure["departure"]
-
-                    sql = "SELECT arrival FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
-                    c.execute(sql, (str(use_at.date()), train["train_class"], train["train_name"], to_station["name"]))
-                    arrival = c.fetchone()
-                    arrival = datetime.datetime(use_at.year, use_at.month, use_at.day, 0, 0, 0).replace(tzinfo=JST) + arrival["arrival"]
-
-
-                    if use_at > departure:
+                    if use_at > train['departure']:
                         # 乗りたい時刻より出発時刻が前なので除外
                         continue
 
@@ -473,8 +461,8 @@ def get_train_search():
                         "last": train["last_station"],
                         "departure": from_station["name"],
                         "arrival": to_station["name"],
-                        "departure_time": str(departure.time()),
-                        "arrival_time": str(arrival.time()),
+                        "departure_time": str(train['departure'].time()),
+                        "arrival_time": str(train['arrival'].time()),
                         "seat_availability": seatAvailability,
                         "seat_fare": fareInformation,
                     })
