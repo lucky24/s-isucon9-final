@@ -164,11 +164,7 @@ distance_fare_list = [
 ]
 def get_distance_fare(c, distance):
     for i in range(len(distance_fare_list) - 1):
-<<<<<<< HEAD
         if distance_fare_list[i]['distance'] <= distance < distance_fare_list[i + 1]['distance']:
-=======
-        if distance_fare_list[i]['distance'] <= distance and distance < distance_fare_list[i + 1]['distance']:
->>>>>>> master
             return distance_fare_list[i]['fare']
     return distance_fare_list[-1]['fare']
 
@@ -176,7 +172,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
 
     distance = abs(to_station["distance"] - from_station["distance"])
     distFare = get_distance_fare(c, distance)
-<<<<<<< HEAD
 
     fare_multiplier = 1.25
 
@@ -217,28 +212,6 @@ def calc_fare(c, date, from_station, to_station, train_class, seat_class):
     print(fare_multiplier)
 
     return int(distFare * fare_multiplier)
-=======
-
-    app.logger.warn("distFare {}".format(distFare))
-
-    sql = "SELECT * FROM fare_master WHERE train_class=%s AND seat_class=%s ORDER BY start_date"
-    c.execute(sql, (train_class, seat_class))
-    fareList = c.fetchall()
-
-    if len(fareList) == 0:
-        raise HttpException(requests.codes['internal_server_error'], "fare_master does not exists")
-
-    selectedFare = fareList[0]
-
-    for fare in fareList:
-        if fare["start_date"].date() <= date:
-            app.logger.warn("%s %s", fare["start_date"].date(), fare["fare_multiplier"])
-            selectedFare = fare
-
-    app.logger.warn("%%%%%%%%%%%%%%%%%%%")
-    return int(distFare * selectedFare["fare_multiplier"])
-
->>>>>>> master
 
 def make_reservation_response(c, reservation):
     sql = "SELECT departure FROM train_timetable_master WHERE date=%s AND train_class=%s AND train_name=%s AND station=%s"
@@ -1187,11 +1160,6 @@ def get_settings():
 @app.route("/initialize", methods=["POST"])
 def post_initialize():
 
-<<<<<<< HEAD
-    # subprocess.call(["/bin/bash", "../sql/init.sh"])
-
-=======
->>>>>>> master
     conn = dbh()
     with conn.cursor() as c:
         c.execute("TRUNCATE seat_reservations")
