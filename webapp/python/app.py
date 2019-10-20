@@ -164,7 +164,7 @@ distance_fare_list = [
     {'distance': 1000, 'fare': 20000},
 ]
 def get_distance_fare(c, distance):
-    for distance_fare in distance_fare_list
+    for distance_fare in distance_fare_list:
         if distance_fare['distance'] <= distance:
             return distance_fare['fare']
 
