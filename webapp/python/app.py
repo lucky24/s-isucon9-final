@@ -150,23 +150,23 @@ def get_available_seats_from_train(c, train, from_station, to_station, seat_clas
 
     return  available_set_map.values()
 
+distance_fare_list = [
+    {'distance': 0, 'fare': 2500},
+    {'distance': 50, 'fare': 3000},
+    {'distance': 75, 'fare': 3700},
+    {'distance': 100, 'fare': 4500},
+    {'distance': 150, 'fare': 5200},
+    {'distance': 200, 'fare': 6000},
+    {'distance': 300, 'fare': 7200},
+    {'distance': 400, 'fare': 8300},
+    {'distance': 500, 'fare': 12000},
+    {'distance': 1000, 'fare': 20000},
+]
 def get_distance_fare(c, distance):
-
-    sql = "SELECT distance,fare FROM distance_fare_master ORDER BY distance"
-    c.execute(sql)
-
-    distance_fare_list = c.fetchall()
-
-    lastDistance = 0.0
-    lastFare = 0
-    for distanceFare in distance_fare_list:
-        app.logger.warn("{} {} {}".format(distance, distanceFare["distance"], distanceFare["fare"]))
-        if  lastDistance < distance and distance < distanceFare["distance"]:
-            break
-        lastDistance = distanceFare["distance"]
-        lastFare = distanceFare["fare"]
-
-    return lastFare
+    for i in range(len(distance_fare_list) - 1):
+        if distance_fare_list[i]['distance'] <= distance and distance < distance_fare_list[i + 1]['distance']:
+            return distance_fare_list[i]['fare']
+    return distance_fare_list[-1]['fare']
 
 def calc_fare(c, date, from_station, to_station, train_class, seat_class):
 
